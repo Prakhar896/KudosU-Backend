@@ -88,39 +88,35 @@ def getCompliments():
 
 @apiBP.route("/api/sendCompliment", methods=["POST"])
 def sendCompliment():
-    if "email" not in request.form:
-        return "ERROR: Email not provided.", 400
-    if "password" not in request.form:
-        return "ERROR: Password not provided.", 400
-    accID = None
-    for id in DI.data["accounts"]:
-        if DI.data["accounts"][id]["email"] == request.form["email"] and DI.data["accounts"][id]["password"] == request.form["password"]:
-            accID = id
-            break
-    if accID == None:
-        return "ERROR: Invalid credentials.", 401
+    if not request.is_json:
+        return "ERROR: Request body is not JSON.", 400
     
-    if "to" not in request.form:
+    requestBody = copy.deepcopy(request.json)
+    accID = checkCredentials(requestBody)
+    if accID.startswith("ERROR"):
+        return accID, 401
+    
+    if "to" not in request.json:
         return "ERROR: Recipient not provided.", 400
-    if request.form["to"] not in [DI.data["accounts"][x]["fullName"] for x in DI.data["accounts"]]:
-        return "ERROR: Recipient does not exist.", 400
-    if "text" not in request.form:
+    if request.json["to"] not in [DI.data["accounts"][x]["fullName"] for x in DI.data["accounts"]]:
+        return "ERROR: Recipient does not exist.", 200
+    if "text" not in request.json:
         return "ERROR: Compliment text not provided.", 400
-    if "isAnonymous" not in request.form:
+    if "isAnonymous" not in request.json:
         return "ERROR: Anonymous status not provided.", 400
     
     recipientID = None
     for id in DI.data["accounts"]:
-        if DI.data["accounts"][id]["fullName"] == request.form["to"]:
+        if DI.data["accounts"][id]["fullName"] == request.json["to"]:
             recipientID = id
             break
     
     DI.data["compliments"][Universal.generateUniqueID()] = {
         "from": accID,
         "to": recipientID,
-        "text": request.form["text"],
+        "text": request.json["text"],
         "imgName": "sample3.jpg",
-        "isAnonymous": request.form["isAnonymous"] == "True",
+        "isAnonymous": request.json["isAnonymous"] == "True",
         "recipientAcknowledged": False,
         "datetime": datetime.datetime.now().strftime(Universal.systemWideStringDatetimeFormat)
     }
