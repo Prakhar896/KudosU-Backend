@@ -89,4 +89,7 @@ def getSentiment():
         return "ERROR: Request body is not JSON.", 400
     
     textToBeAnalysed = request.json["text"]
-    
+
+    ## Perform sentiment analysis
+
+    ## Return "SUCCESS: Positive." or "SUCCESS: Negative."
