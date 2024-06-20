@@ -10,6 +10,60 @@ if True in [x not in os.environ for x in ["SERVER_PORT"]]:
 
 app = Flask(__name__)
 
+def resetDB():
+    acc1ID = None
+    acc2ID = None
+
+    ## Create sample accounts
+    if "prakhar07062@gmail.com" not in [DI.data["accounts"][x]["email"] for x in DI.data["accounts"]]:
+        DI.data["accounts"][Universal.generateUniqueID()] = {
+            "email": "prakhar07062@gmail.com",
+            "password": "123456"
+        }
+    else:
+        acc1ID = [x for x in DI.data["accounts"] if DI.data["accounts"][x]["email"] == "prakhar07062@gmail.com"][0]
+    
+    if "prakhar@prakhartrivedi.works" not in [DI.data["accounts"][x]["email"] for x in DI.data["accounts"]]:
+        DI.data["accounts"][Universal.generateUniqueID()] = {
+            "email": "prakhar@prakhartrivedi.works",
+            "password": "123456"
+        }
+    else:
+        acc2ID = [x for x in DI.data["accounts"] if DI.data["accounts"][x]["email"] == "prakhar@prakhartrivedi.works"][0]
+
+    # Create 3 sample compliments
+    DI.data["compliments"] = {
+        Universal.generateUniqueID(): {
+            "from": acc2ID,
+            "to": acc1ID,
+            "text": "You are awesome!",
+            "imgName": "sample",
+            "isAnonymous": True,
+            "recipientAcknowledged": False,
+            "datetime": datetime.datetime.now().strftime(Universal.systemWideStringDatetimeFormat)
+        },
+        Universal.generateUniqueID(): {
+            "from": acc2ID,
+            "to": acc1ID,
+            "text": "Thank you so much for helping me!",
+            "imgName": "sample",
+            "isAnonymous": False,
+            "recipientAcknowledged": True,
+            "datetime": datetime.datetime.now().strftime(Universal.systemWideStringDatetimeFormat)
+        },
+        Universal.generateUniqueID(): {
+            "from": acc2ID,
+            "to": acc1ID,
+            "text": "You are a great person!",
+            "imgName": "sample",
+            "isAnonymous": False,
+            "recipientAcknowledged": True,
+            "datetime": datetime.datetime.now().strftime(Universal.systemWideStringDatetimeFormat)
+        }
+    }
+    
+    DI.save()
+
 ## Create 404 error handler
 @app.errorhandler(404)
 def page_not_found(e):
@@ -39,20 +93,17 @@ if __name__ == '__main__':
     else:
         print("DI: Setup complete.")
 
-    if "prakhar07062@gmail.com" not in [DI.data["accounts"][x]["email"] for x in DI.data["accounts"]]:
-        DI.data["accounts"][Universal.generateUniqueID()] = {
-            "email": "prakhar07062@gmail.com",
-            "password": "123456"
-        }
-    if "prakhar@prakhartrivedi.works" not in [DI.data["accounts"][x]["email"] for x in DI.data["accounts"]]:
-        DI.data["accounts"][Universal.generateUniqueID()] = {
-            "email": "prakhar@prakhartrivedi.works",
-            "password": "123456"
-        }
-    DI.save()
+    ## Boilerplate setup
+    if not ("BoilerplateDisabled" in os.environ and os.environ["BoilerplateDisabled"] == "True"):
+        resetDB()
+        print("Boilerplate setup complete (Set BoilerplateDisabled to True to disable).")
 
     # Blueprint registration
     from api import apiBP
     app.register_blueprint(apiBP)
+
+    print()
+    print("Boot pre-processing complete; all services online. Booting...")
+    Logger.log("MAIN: Server booted.")
 
     app.run(host="0.0.0.0", port=os.environ["SERVER_PORT"])
