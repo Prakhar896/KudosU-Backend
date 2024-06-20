@@ -1,6 +1,7 @@
 import os, sys, json, datetime, copy
 from flask import Blueprint, request, jsonify, redirect, url_for, render_template, session
 from main import DI, Universal, resetDB
+from sentimentmodel import sentimentfunc
 
 apiBP = Blueprint('api', __name__)
 
@@ -89,7 +90,13 @@ def getSentiment():
         return "ERROR: Request body is not JSON.", 400
     
     textToBeAnalysed = request.json["text"]
-
+    if not textToBeAnalysed:
+        return "ERROR: empty text."
+    
     ## Perform sentiment analysis 
+    output = sentimentfunc(textToBeAnalysed)
 
-    ## Return "SUCCESS: Positive." or "SUCCESS: Negative."
+    if output.startswith("ERROR"):
+        return output
+    
+    return "SUCCESS: " + output
