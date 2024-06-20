@@ -4,3 +4,4 @@ __pycache__/
 virt/
 venv/
 serviceAccountKey.json
+database.txt
