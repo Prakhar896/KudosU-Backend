@@ -69,6 +69,8 @@ def getCompliments():
                     processedCompliment["from"] = "Unknown"
             
             processedCompliment["to"] = DI.data["accounts"][accID]["fullName"]
+
+            processedCompliment["imgURL"] = request.host_url + "static/" + processedCompliment["imgName"]
             
             ## Add compliment to user-addressed compliments
             userAddressedCompliments[complimentID] = processedCompliment
