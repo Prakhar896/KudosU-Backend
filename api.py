@@ -1,6 +1,6 @@
 import os, sys, json, datetime, copy
 from flask import Blueprint, request, jsonify, redirect, url_for, render_template, session
-from main import DI, Universal, resetDB
+from main import DI, Universal, resetDB, Emailer
 from sentimentmodel import sentimentfunc
 
 apiBP = Blueprint('api', __name__)
@@ -121,6 +121,18 @@ def sendCompliment():
         "datetime": datetime.datetime.now().strftime(Universal.systemWideStringDatetimeFormat)
     }
     DI.save()
+
+    ## Send Emailer
+    note = {
+        "from": "Anonymous" if request.json["isAnonymous"] == "True" else DI.data["accounts"][accID]["fullName"],
+        "text": request.json["text"]
+    }
+    Emailer.sendEmail(
+        destEmail=DI.data["accounts"][recipientID]["email"],
+        subject="New Compliment Received",
+        altText="You have received a new compliment on KudosU! Login to the website to check it out!",
+        html=render_template("emails/NewCompliment.html", note=note, homepage="http://localhost:5000/")
+    )
 
     return "SUCCESS: Compliment sent.", 200
 

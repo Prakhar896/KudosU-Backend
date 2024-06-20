@@ -2,6 +2,7 @@ import os, sys, json, datetime
 from flask import Flask, request, jsonify, redirect, url_for, render_template, session
 from flask_cors import CORS
 from models import *
+from emailer import *
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -96,6 +97,9 @@ if __name__ == '__main__':
         sys.exit(1)
     else:
         print("DI: Setup complete.")
+
+    ## Check Emailer context
+    Emailer.checkContext()
 
     ## Boilerplate setup
     if not ("BoilerplateDisabled" in os.environ and os.environ["BoilerplateDisabled"] == "True"):

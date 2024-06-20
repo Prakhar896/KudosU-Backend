@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Compliment Received</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <img src="https://github.com/Prakhar896/KudosU-Backend/blob/main/LogoTransparent.png?raw=true" alt="KudosU Logo" height="150px">
+    <h3>You received a new note!</h3>
+    <p>It's your lucky day! You received a new note on KudosU from someone!</p>
+    <br>
+    <br>
+    <h4>A Heartfelt Note</h4>
+    <p>From: {{ note["from"] }}</p>
+    <p>{{ note["text"] }}</p>
+    <a href="{{ homepage }}">View the note fully in the website!</a>
+    <br>
+    <br>
+    <p>Thank you for using KudosU!</p>
+</body>
+</html>
