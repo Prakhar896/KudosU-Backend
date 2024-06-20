@@ -90,6 +90,6 @@ def getSentiment():
     
     textToBeAnalysed = request.json["text"]
 
-    ## Perform sentiment analysis
+    ## Perform sentiment analysis 
 
     ## Return "SUCCESS: Positive." or "SUCCESS: Negative."
