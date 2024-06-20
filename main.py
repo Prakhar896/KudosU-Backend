@@ -1,5 +1,6 @@
 import os, sys, json, datetime
 from flask import Flask, request, jsonify, redirect, url_for, render_template, session
+from models import *
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -14,4 +15,25 @@ def index():
     return "Welcome to KudosU Backend Server."
 
 if __name__ == '__main__':
+    # Boot pre-processing
+
+    ## Set up FireConn
+    if FireConn.checkPermissions():
+        response = FireConn.connect()
+        if response != True:
+            print("MAIN BOOT: Error in setting up FireConn; error: " + response)
+            sys.exit(1)
+        else:
+            print("FIRECONN: Firebase connection established.")
+
+    ## Set up DatabaseInterface
+    response = DI.setup()
+    if response != "Success":
+        print("MAIN BOOT: Error in setting up DI; error: " + response)
+        sys.exit(1)
+    else:
+        print("DI: Setup complete.")
+
+    
+
     app.run(host="0.0.0.0", port=os.environ["SERVER_PORT"])
