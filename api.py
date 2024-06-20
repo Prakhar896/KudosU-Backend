@@ -133,8 +133,13 @@ def getSentiment():
     if not request.is_json:
         return "ERROR: Request body is not JSON.", 400
     
-    textToBeAnalysed = request.json["text"]
-    if not textToBeAnalysed:
+    if "text" not in request.json:
+        return "ERROR: Text not provided.", 400
+    if not isinstance(request.json["text"], str):
+        return "ERROR: Text is not a string.", 400
+    
+    textToBeAnalysed = request.json["text"].strip()
+    if not textToBeAnalysed or len(textToBeAnalysed) == 0:
         return "ERROR: empty text."
     
     ## Perform sentiment analysis 

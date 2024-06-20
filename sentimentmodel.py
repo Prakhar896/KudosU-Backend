@@ -2,7 +2,7 @@ import nltk
 from nltk.sentiment import SentimentIntensityAnalyzer
 
 # Download VADER lexicon if not already downloaded
-#nltk.download('vader_lexicon')
+nltk.download('vader_lexicon')
 
 def sentimentfunc(text):
     try:
