@@ -1,5 +1,6 @@
 import os, sys, json, datetime
 from flask import Flask, request, jsonify, redirect, url_for, render_template, session
+from flask_cors import CORS
 from models import *
 from dotenv import load_dotenv
 load_dotenv()
@@ -9,6 +10,7 @@ if True in [x not in os.environ for x in ["SERVER_PORT"]]:
     sys.exit(1)
 
 app = Flask(__name__)
+CORS(app)
 
 def resetDB():
     acc1ID = None
