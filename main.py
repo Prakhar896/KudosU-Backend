@@ -10,6 +10,11 @@ if True in [x not in os.environ for x in ["SERVER_PORT"]]:
 
 app = Flask(__name__)
 
+## Create 404 error handler
+@app.errorhandler(404)
+def page_not_found(e):
+    return "ERROR: 404 Endpoint Not Found", 404
+
 @app.route('/')
 def index():
     return "Welcome to KudosU Backend Server."
@@ -34,6 +39,8 @@ if __name__ == '__main__':
     else:
         print("DI: Setup complete.")
 
-    
+    # Blueprint registration
+    from api import apiBP
+    app.register_blueprint(apiBP)
 
     app.run(host="0.0.0.0", port=os.environ["SERVER_PORT"])
