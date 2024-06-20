@@ -116,7 +116,7 @@ def sendCompliment():
         "from": accID,
         "to": recipientID,
         "text": request.form["text"],
-        "imgName": "sample",
+        "imgName": "sample3.jpg",
         "isAnonymous": request.form["isAnonymous"] == "True",
         "recipientAcknowledged": False,
         "datetime": datetime.datetime.now().strftime(Universal.systemWideStringDatetimeFormat)

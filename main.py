@@ -39,7 +39,7 @@ def resetDB():
             "from": acc2ID,
             "to": acc1ID,
             "text": "You are awesome!",
-            "imgName": "sample",
+            "imgName": "sample1.jpg",
             "isAnonymous": True,
             "recipientAcknowledged": False,
             "datetime": datetime.datetime.now().strftime(Universal.systemWideStringDatetimeFormat)
@@ -48,7 +48,7 @@ def resetDB():
             "from": acc2ID,
             "to": acc1ID,
             "text": "Thank you so much for helping me!",
-            "imgName": "sample",
+            "imgName": "sample2.jpg",
             "isAnonymous": False,
             "recipientAcknowledged": True,
             "datetime": datetime.datetime.now().strftime(Universal.systemWideStringDatetimeFormat)
@@ -57,7 +57,7 @@ def resetDB():
             "from": acc1ID,
             "to": acc2ID,
             "text": "Stay awesome!",
-            "imgName": "sample",
+            "imgName": "sample1.jpg",
             "isAnonymous": False,
             "recipientAcknowledged": False,
             "datetime": datetime.datetime.now().strftime(Universal.systemWideStringDatetimeFormat)
