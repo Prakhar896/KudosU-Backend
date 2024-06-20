@@ -6,3 +6,4 @@ venv/
 serviceAccountKey.json
 database.txt
 logs.txt
+isInReplit.txt

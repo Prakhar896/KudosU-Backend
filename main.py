@@ -1,4 +1,8 @@
 import os, sys, json, datetime
+
+if os.path.isfile("isInReplit.txt"):
+    os.system("pip install flask flask-cors firebase-admin nltk python-dotenv requests passlib")
+
 from flask import Flask, request, jsonify, redirect, url_for, render_template, session
 from flask_cors import CORS
 from models import *
