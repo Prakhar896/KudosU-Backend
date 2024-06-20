@@ -33,6 +33,19 @@ def resetDB():
     
     return "SUCCESS: Database reset.", 200
 
+@apiBP.route("/api/reloadDI", methods=["GET"])
+def reloadDI():
+    accessKey = request.args.get("accessKey")
+    if accessKey != os.environ.get("AccessKey", None):
+        return "ERROR: Access key is invalid.", 401
+    
+    try:
+        DI.load()
+    except Exception as e:
+        return "ERROR: Failed to reload DI. Error: {}".format(e), 500
+    
+    return "SUCCESS: DI reloaded.", 200
+
 @apiBP.route("/api/login", methods=["POST"])
 def login():
     if not request.is_json:
