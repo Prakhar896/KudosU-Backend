@@ -17,6 +17,7 @@ def resetDB():
     ## Create sample accounts
     if "prakhar07062@gmail.com" not in [DI.data["accounts"][x]["email"] for x in DI.data["accounts"]]:
         DI.data["accounts"][Universal.generateUniqueID()] = {
+            "fullName": "John Doe",
             "email": "prakhar07062@gmail.com",
             "password": "123456"
         }
@@ -25,6 +26,7 @@ def resetDB():
     
     if "prakhar@prakhartrivedi.works" not in [DI.data["accounts"][x]["email"] for x in DI.data["accounts"]]:
         DI.data["accounts"][Universal.generateUniqueID()] = {
+            "fullName": "Sarah Jones",
             "email": "prakhar@prakhartrivedi.works",
             "password": "123456"
         }
@@ -52,12 +54,12 @@ def resetDB():
             "datetime": datetime.datetime.now().strftime(Universal.systemWideStringDatetimeFormat)
         },
         Universal.generateUniqueID(): {
-            "from": acc2ID,
-            "to": acc1ID,
-            "text": "You are a great person!",
+            "from": acc1ID,
+            "to": acc2ID,
+            "text": "Stay awesome!",
             "imgName": "sample",
             "isAnonymous": False,
-            "recipientAcknowledged": True,
+            "recipientAcknowledged": False,
             "datetime": datetime.datetime.now().strftime(Universal.systemWideStringDatetimeFormat)
         }
     }

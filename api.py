@@ -74,14 +74,56 @@ def getCompliments():
             userAddressedCompliments[complimentID] = processedCompliment
 
             ## Mark unacknowledged compliments as acknowledged
-            if DI.data["compliments"][accID]["recipientAcknowledged"] != True:
-                DI.data["compliments"][accID]["recipientAcknowledged"] = True
+            if DI.data["compliments"][complimentID]["recipientAcknowledged"] != True:
+                DI.data["compliments"][complimentID]["recipientAcknowledged"] = True
                 dbChangesMade = True
     
     if dbChangesMade:
         DI.save()
     
     return jsonify(userAddressedCompliments), 200
+
+@apiBP.route("/api/sendCompliment", methods=["POST"])
+def sendCompliment():
+    if "email" not in request.form:
+        return "ERROR: Email not provided.", 400
+    if "password" not in request.form:
+        return "ERROR: Password not provided.", 400
+    accID = None
+    for id in DI.data["accounts"]:
+        if DI.data["accounts"][id]["email"] == request.form["email"] and DI.data["accounts"][id]["password"] == request.form["password"]:
+            accID = id
+            break
+    if accID == None:
+        return "ERROR: Invalid credentials.", 401
+    
+    if "to" not in request.form:
+        return "ERROR: Recipient not provided.", 400
+    if request.form["to"] not in [DI.data["accounts"][x]["fullName"] for x in DI.data["accounts"]]:
+        return "ERROR: Recipient does not exist.", 400
+    if "text" not in request.form:
+        return "ERROR: Compliment text not provided.", 400
+    if "isAnonymous" not in request.form:
+        return "ERROR: Anonymous status not provided.", 400
+    
+    recipientID = None
+    for id in DI.data["accounts"]:
+        if DI.data["accounts"][id]["fullName"] == request.form["to"]:
+            recipientID = id
+            break
+    
+    DI.data["compliments"][Universal.generateUniqueID()] = {
+        "from": accID,
+        "to": recipientID,
+        "text": request.form["text"],
+        "imgName": "sample",
+        "isAnonymous": request.form["isAnonymous"] == "True",
+        "recipientAcknowledged": False,
+        "datetime": datetime.datetime.now().strftime(Universal.systemWideStringDatetimeFormat)
+    }
+    DI.save()
+
+    return "SUCCESS: Compliment sent.", 200
 
 @apiBP.route('/api/getSentiment', methods=["POST"])
 def getSentiment():
