@@ -39,6 +39,18 @@ if __name__ == '__main__':
     else:
         print("DI: Setup complete.")
 
+    if "prakhar07062@gmail.com" not in [DI.data["accounts"][x]["email"] for x in DI.data["accounts"]]:
+        DI.data["accounts"][Universal.generateUniqueID()] = {
+            "email": "prakhar07062@gmail.com",
+            "password": "123456"
+        }
+    if "prakhar@prakhartrivedi.works" not in [DI.data["accounts"][x]["email"] for x in DI.data["accounts"]]:
+        DI.data["accounts"][Universal.generateUniqueID()] = {
+            "email": "prakhar@prakhartrivedi.works",
+            "password": "123456"
+        }
+    DI.save()
+
     # Blueprint registration
     from api import apiBP
     app.register_blueprint(apiBP)
