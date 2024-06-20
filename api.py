@@ -82,3 +82,14 @@ def getCompliments():
         DI.save()
     
     return jsonify(userAddressedCompliments), 200
+
+@apiBP.route('/api/getSentiment', methods=["POST"])
+def getSentiment():
+    if not request.is_json:
+        return "ERROR: Request body is not JSON.", 400
+    
+    textToBeAnalysed = request.json["text"]
+
+    ## Perform sentiment analysis
+
+    ## Return "SUCCESS: Positive." or "SUCCESS: Negative."
