@@ -1,6 +1,6 @@
 import os, sys, json, datetime, copy
 from flask import Blueprint, request, jsonify, redirect, url_for, render_template, session
-from main import DI, Universal, resetDB, Emailer
+from main import DI, Universal, resetDB, Emailer, Logger
 from sentimentmodel import sentimentfunc
 
 apiBP = Blueprint('api', __name__)
@@ -45,6 +45,18 @@ def reloadDI():
         return "ERROR: Failed to reload DI. Error: {}".format(e), 500
     
     return "SUCCESS: DI reloaded.", 200
+
+@apiBP.route("/api/logs", methods=["GET"])
+def logs():
+    accessKey = request.args.get("accessKey")
+    if accessKey != os.environ.get("AccessKey", None):
+        return "ERROR: Access key is invalid.", 401
+    
+    logs = Logger.readAll()
+    if not isinstance(logs, list):
+        return logs, 500
+    
+    return "<br>".join(logs), 200
 
 @apiBP.route("/api/login", methods=["POST"])
 def login():
