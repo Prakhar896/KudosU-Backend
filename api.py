@@ -22,7 +22,7 @@ def health():
     return "SUCCESS: Healthy!", 200
 
 @apiBP.route("/api/resetDB", methods=["GET"])
-def resetDB():
+def resetDBEndpoint():
     accessKey = request.args.get("accessKey")
     if accessKey != os.environ.get("AccessKey", None):
         return "ERROR: Access key is invalid.", 401
@@ -41,6 +41,7 @@ def reloadDI():
     
     try:
         DI.load()
+        Logger.log("API RELOADDI: Reloaded DI. Sync status: {}".format(DI.syncStatus))
     except Exception as e:
         return "ERROR: Failed to reload DI. Error: {}".format(e), 500
     
