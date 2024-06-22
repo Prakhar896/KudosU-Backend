@@ -20,7 +20,7 @@ The server is backed by a robust integration with Firebase Realtime Database and
 
 ## Frontend
 
-Backend repository can be found [here](https://github.com/Prakhar896/KudosU-Frontend).
+Frontend repository can be found [here](https://github.com/Prakhar896/KudosU-Frontend).
 
 ## The Team
 - Prakhar Trivedi (@Prakhar896)
